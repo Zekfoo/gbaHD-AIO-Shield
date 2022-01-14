@@ -95,7 +95,7 @@ Please source your own passive components, only values and footprints are listed
 |  | Q1 | 1 | P-Channel MOSFET SOT23 | PJM3415PSA | - | https://lcsc.com/product-detail/MOSFETs_PJSEMI-PJM3415PSA_C411717.html |
 |  | R20 | 1 | 100kOhm 0603 | - | Total 6 pieces including "Required" count | - |
 |  | R21 | 1 | 2.2kOhm 0603 | - | Total 4 pieces including "Onboard Arduino" count | - |
-|  | SW2 | 1 | Rocker Switch | RS601HL-1020011BB | - | https://lcsc.com/product-detail/Rocker-Switches_HCTL-RS601HL-1020011BB_C2885783.html |
+|  | SW2 | 1 | Rocker Switch | RS601HL-1020011BB | Or use any switch of your choice | https://lcsc.com/product-detail/Rocker-Switches_HCTL-RS601HL-1020011BB_C2885783.html |
 
 ## Programming the Spartan Edge Accelerator
 TO-DO. For now, refer to the documentation on zwenergy's repo.
