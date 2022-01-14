@@ -109,7 +109,7 @@ If you assemble this board with an onboard Arduino, the ATmega328p will not come
 
 ## Programming the Arduino
 
-The Arduino is used to interface between the SNES controller port and the GBA for button inputs and the reset function. It also interfaces with the Spartan Edge Accelerator for on-screen display controls. Upload the sketch from \<sketch location\>. 
+The Arduino is used to interface between the SNES controller port and the GBA for button inputs and the reset function. It also interfaces with the Spartan Edge Accelerator for on-screen display controls. Upload this [sketch](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/controller/controller.ino).
 
 By default, the button combos are L+R+X+Y to toggle the OSD, and L+R+START+SELECT to reset the GBA. This can be configured by modifying the `` `define`` macros in the Arduino sketch. 
 
