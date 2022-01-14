@@ -105,7 +105,7 @@ TO-DO. For now, refer to the documentation on zwenergy's repo.
 
 ## Programming the Arduino bootloader (onboard Arduino only)
 
-If you assemble this board with an onboard Arduino, the ATmega328p will not come with the Arduino bootloader installed, so it will not be programmable from the Arduino IDE right out of the gate. Follow the [official documentation](https://docs.arduino.cc/built-in-examples/arduino-isp/ArduinoISP) to program the bootloader via the ICSP header on the board (a second Arduino is required).
+If you assemble this board with an onboard Arduino, the ATmega328p will not come with the Arduino bootloader installed, so it will not be programmable from the Arduino IDE right out of the gate. Follow the [official documentation](https://docs.arduino.cc/built-in-examples/arduino-isp/ArduinoISP) to program the bootloader via the ICSP header on the board (follow the steps to program it as an Arduino Nano, a second Arduino is required).
 
 ## Programming the Arduino
 
