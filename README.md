@@ -1,14 +1,17 @@
 
 # gbaHD AIO Shield
 
-
-![](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/images/kicad_front.png)
+![](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/images/front_angle_w_game.jpg)
 
 This is a Spartan Edge Accelerator shield which implements all the hardware connections needed for zwenergy's [gbaHD](https://github.com/zwenergy/gbaHD), no wires required! The PCB incorporates the GBA motherboard, Arduino Nano, and SNES controller port used in a typical gbaHD installation, and interfaces directly with the Spartan Edge Accelerator board via pin header connections. 
+
+![](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/images/back_angle.jpg)
 
 ## Disclaimer
 
 Assembly of this PCB requires donor parts from a Game Boy Advance motherboard, and therefore also requires advanced soldering skills. Do not attempt this project unless you are comfortable and confident in your ability to desolder and solder both surface-mount and through-hole components, otherwise you risk irreparable damage to your original console and to this PCB. I claim no responsibility and accept no blame for any failed attempts.
+
+![](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/images/kicad_front.png)
 
 ## Ordering the board
 
