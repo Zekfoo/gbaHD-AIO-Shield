@@ -29,9 +29,11 @@ Board thickness of 1.2mm or thinner is recommended. 1.6mm will work, but solderi
 There are a couple *optional* features on this PCB to keep in mind before ordering your parts:
 
 **Choice between an onboard ATmega328P or an external Arduino Nano**
+
 The onboard Arduino offers a cleaner look for the assembled PCB, but since ATmega chips are becoming prohibitively expensive during this  chip shortage, there is also support for plugging in your own Arduino Nano via pin headers. *These options are mutually-exclusive, pick one.*
 
 **Master power switch**
+
 This may be useful for consolizer-style installations that use an enclosure, such that a toggle switch can be mounted to the case to switch power to the entire assembly while leaving the USB-C power supply plugged in. This is completely optional, since the power can be switched off using the Spartan Edge Accelerator's own switch or by unplugging the power supply.
 
 The BOM below is separated between donor parts, required parts, and parts for optional features. Read carefully since the optional features may require components that are also listed in earlier sections.
