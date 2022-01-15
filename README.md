@@ -19,7 +19,7 @@ Assembly of this PCB requires donor parts from a Game Boy Advance motherboard, a
 
 The PCB can be ordered via the following links:
 
-**[PCBWay](https://www.pcbway.com/project/shareproject/gbaHD_AIO_Shield_8eb5e84a.html)** (Full disclosure - this link gives me a small commission from each order)
+**[PCBWay](https://www.pcbway.com/project/shareproject/gbaHD_AIO_Shield_8eb5e84a.html)** (Full disclosure - this link gives me a small commission from each order - if you're new to PCBWay, feel free to use my [referral link](https://www.pcbway.com/setinvite.aspx?inviteid=422136) to sign up and get $5 off your order)
 
 **[OSHPark](https://oshpark.com/shared_projects/GWejn5tp)**
 
