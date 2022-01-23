@@ -101,7 +101,11 @@ Please source your own passive components, only values and footprints are listed
 |  | SW2 | 1 | Rocker Switch | RS601HL-1020011BB | Or use any switch of your choice | https://lcsc.com/product-detail/Rocker-Switches_HCTL-RS601HL-1020011BB_C2885783.html |
 
 ## Programming the Spartan Edge Accelerator
-TO-DO. For now, refer to the documentation on zwenergy's repo.
+Refer to zwenergy's [spartan-edge-esp32-boot](https://github.com/zwenergy/spartan-edge-esp32-boot) repo for instructions on how to program the Spartan board's ESP32 (Use 01LoadDefaultBitstream). The ESP32 firmware allows the configuring of the FPGA logic from a bitstream file loaded on the microSD card. 
+
+Save one of the [latest bitstream releases](https://github.com/zwenergy/gbaHD/tree/master/bitstream) as `/overlay/default.bit` on your microSD card.
+
+zwenergy's ESP32 firmware also supports uploading the bitstream file via WiFi, such that the microSD card doesn't need to be removed. Simply connect to the `gbaHD` network hosted by the ESP32 (default password is `gbahdwifi`, this can be modified by editing the ESP32 Arduino sketch), and navigate to http://gbahd.local/ (if this doesn't work, try 192.168.4.1 instead). From here, the web page allows you to upload a bitstream file directly to the microSD card. Bitstream changes are applied after power cycling the Spartan board.
 
 ## Programming the Arduino bootloader (onboard Arduino only)
 
