@@ -113,14 +113,18 @@ Note that the onboard Arduino circuit is functionally identical to any Arduino N
 
 The Arduino is used to interface between the SNES controller port and the GBA for button inputs and the reset function. It also interfaces with the Spartan Edge Accelerator for on-screen display controls. Upload this [sketch](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/controller/controller.ino).
 
-By default, the button combos are L+R+X+Y to toggle the OSD, and L+R+START+SELECT to reset the GBA. This can be configured by modifying the `` `define`` macros in the Arduino sketch. 
+By default, the button combos are:
+- L+R+X+Y to toggle the OSD
+- L+R+START+SELECT to reset the GBA. 
+ 
+These combos can be configured by modifying the `` `define`` macros in the Arduino sketch. 
 
 ## Installing the master power switch
 
-As mentioned earlier, this is an optional feature that allows the use of an external toggle switch. This replaces the function of the power switch on the Spartan board itself, which would be inaccessible when installed in an enclosure. The load switch circuit (Q1, C28, C29, R20, R21) allows for the use of any toggle switch, regardless of rated current, and provides debouncing for non-ideal switch contacts.
+As mentioned earlier, this is an optional feature that allows the use of an external toggle switch. This replaces the function of the power switch on the Spartan board itself, which would be inaccessible when installed in an enclosure. The load switch circuit (Q1, C28, C29, R20, R21) allows for the use of any toggle switch, regardless of rated current, and provides debouncing for poor/dirty switch contacts.
 
 1. Switch the power switch on the Spartan board to "EXTVIN-5V"
-2. Solder 2 wires from the legs of the power switch labelled "5V" and "USB" on the Spartan boards to the corresponding solder points on the shield
+2. Solder 2 wires from the legs of the power switch labelled "5V" and "USB" on the Spartan board to the corresponding solder points on the shield
 3. Solder 2 wires from the master power switch to the solder points labelled "POWER SWITCH" on the shield
 4. While the Spartan board is plugged into a USB-C power supply, the master power switch can be used to switch power on and off to the whole assembly
 
@@ -131,3 +135,11 @@ As mentioned earlier, this is an optional feature that allows the use of an exte
 ## Acknowledgements
 As always, thanks to the [Gameboy Discord](https://discord.gg/gameboy) community for their continued support.
 Special thanks to [zwenergy](https://github.com/zwenergy) for his hard work on the gbaHD
+
+# License
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+
+Feel free to modify this design however you like, but please make sure to give credit where it is due. I encourage you to share your improvements with the rest of the Gameboy modding community, I mainly frequent the Gameboy [Discord](https://discord.gg/RYN3bMxr) and [Subreddit](https://www.reddit.com/r/Gameboy/)
+
+Under this license, you are not permitted to profit from or commercialize this design in any part without my express permission.
