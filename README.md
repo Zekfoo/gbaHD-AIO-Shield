@@ -124,6 +124,10 @@ As mentioned earlier, this is an optional feature that allows the use of an exte
 3. Solder 2 wires from the master power switch to the solder points labelled "POWER SWITCH" on the shield
 4. While the Spartan board is plugged into a USB-C power supply, the master power switch can be used to switch power on and off to the whole assembly
 
+## Known issues
+
+- When using an EZ Flash Omega flash cart, the reset button combo will only reset the loaded ROM. Resetting to the flash cart menu after a ROM has already been loaded requires a manual power reset
+
 ## Acknowledgements
 As always, thanks to the [Gameboy Discord](https://discord.gg/gameboy) community for their continued support.
 Special thanks to [zwenergy](https://github.com/zwenergy) for his hard work on the gbaHD
