@@ -21,7 +21,7 @@ The PCB can be ordered via the following links:
 
 **[PCBWay](https://www.pcbway.com/project/shareproject/gbaHD_AIO_Shield_8eb5e84a.html)** (Full disclosure - this link gives me a small commission from each order - if you're new to PCBWay, feel free to use my [referral link](https://www.pcbway.com/setinvite.aspx?inviteid=422136) to sign up and get $5 off your order)
 
-**[OSHPark](https://oshpark.com/shared_projects/GWejn5tp)**
+**[OSHPark](https://oshpark.com/shared_projects/6wbIivMl)**
 
 Or feel free to order from your preferred PCB fab using the gerbers on this repo.
 
@@ -52,12 +52,12 @@ Please source your own passive components, only values and footprints are listed
 |  | P2 | 1 | Cart connector | - | - | - |
 |  | EM1, EM2 | 2 | Common-mode choke | ACM4532-102-3P | - | - |
 |  |  |  |  |  |  |  |
-| **Required** | C1, C5, C6, C7, C8, C9, C10, C11,   C12, C13, C14, C16, C17, C21, C26 | 15 | 0.1uF 0603 | - | - | - |
+| **Required** | C1, C5, C6, C7, C8, C9, C10, C11,   C12, C13, C14, C16, C17, C21 | 14 | 0.1uF 0603 | - | - | - |
 |  | C2, C3, C4 | 3 | 100pF 0603 | - | - | - |
-|  | C15, C22, C27 | 3 | 10uF 0805 | - | - | - |
-|  | D1, D4, D6 | 3 | Green LED 0603 | LTST-C191KGKT | Or generic | https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C191KGKT_C125098.html |
-|  | D2, D3 | 2 | Schottky diode | B5817WS | - | https://lcsc.com/product-detail/Schottky-Barrier-Diodes-SBD_Yangzhou-Yangjie-Elec-Tech-B5817WS_C699102.html |
-|  | F1, F2, F3 | 3 | 1.25A fuse 0603 | - | - | - |
+|  | C15, C22 | 2 | 10uF 0805 | - | - | - |
+|  | D1, D4 | 2 | Green LED 0603 | LTST-C191KGKT | Or generic | https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C191KGKT_C125098.html |
+|  | D3 | 1 | Schottky diode | B5817WS | - | https://lcsc.com/product-detail/Schottky-Barrier-Diodes-SBD_Yangzhou-Yangjie-Elec-Tech-B5817WS_C699102.html |
+|  | F1, F2 | 2 | 1.25A fuse 0603 | - | - | - |
 |  | P3 | 1 | SNES controller port | - | - | https://aliexpress.com/item/32828768824.html |
 |  | R1, R6, R8, R12 | 4 | 100kOhm 0603 | - | - | - |
 |  | R2, R3, R4, R5 | 4 | 330Ohm 0603 | - | - | - |
@@ -74,11 +74,15 @@ Please source your own passive components, only values and footprints are listed
 |  | - | 2 | 8-pin female header |  | Or generic, cut to size | https://lcsc.com/product-detail/Female-Headers_XKB-Connectivity-X6511FV-08-C85D32_C718237.html |
 |  | - | 1 | 6-pin female header |  | Or generic, cut to size | https://lcsc.com/product-detail/Female-Headers_XKB-Connectivity-X6511FV-06-C85D32_C718239.html |
 |  |  |  |  |  |  |  |
-| **Onboard Arduino Only** | C18, C19 | 2 | 1uF 0603 | - | - | - |
-|  | C20 | 1 | 10uF 0805 | - | Total 4 pieces including "Required" count | - |
+| **Onboard Arduino Only** | C26 | 1 | 0.1uF 0603 | - | Total 15 pieces including "Required" count | - |
+|  | C18, C19 | 2 | 1uF 0603 | - | - | - |
+|  | C20, C27 | 2 | 10uF 0805 | - | Total 4 pieces including "Required" count | - |
 |  | C23, C30, C31, C32 | 4 | 0.1uF 0603 | - | Total 19 pieces including "Required" count | - |
 |  | C24, C25 | 2 | 18pF 0603 | - | - | - |
+|  | D2 | 1 | Schottky diode | B5817WS | Total 2 pieces including "Required" count | https://lcsc.com/product-detail/Schottky-Barrier-Diodes-SBD_Yangzhou-Yangjie-Elec-Tech-B5817WS_C699102.html |
 |  | D5 | 1 | Red LED 0603 | LTST-C191KRKT | Or generic | https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C191KRKT_C125099.html |
+|  | D6 | 1 | Green LED 0603 | LTST-C191KGKT | Or generic, total 3 pieces including "Required" count | https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C191KGKT_C125098.html |
+|  | F3 | 1 | 1.25A fuse 0603 | - | Total 3 pieces including "Required" count | - |
 |  | P4 | 1 | USB-C Port | U262-161N-4BVC11 | - | https://lcsc.com/product-detail/USB-Connectors_XKB-Connectivity-U262-161N-4BVC11_C319148.html |
 |  | P5 | 1 | 2x3-pin male header | X6521WV-2x03H-C30D60 | Or generic, cut to size | https://lcsc.com/product-detail/Pin-Headers_XKB-Connectivity-X6521WV-2x03H-C30D60_C706893.html |
 |  | R15, R16, R17 | 3 | 2.2kOhm 0603 | - | - | - |
