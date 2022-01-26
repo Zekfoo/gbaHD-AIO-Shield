@@ -1,14 +1,17 @@
 
 # gbaHD AIO Shield
 
-
-![](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/images/kicad_front.png)
+![](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/images/front_angle_w_game.jpg)
 
 This is a Spartan Edge Accelerator shield which implements all the hardware connections needed for zwenergy's [gbaHD](https://github.com/zwenergy/gbaHD), no wires required! The PCB incorporates the GBA motherboard, Arduino Nano, and SNES controller port used in a typical gbaHD installation, and interfaces directly with the Spartan Edge Accelerator board via pin header connections. 
+
+![](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/images/back_angle.jpg)
 
 ## Disclaimer
 
 Assembly of this PCB requires donor parts from a Game Boy Advance motherboard, and therefore also requires advanced soldering skills. Do not attempt this project unless you are comfortable and confident in your ability to desolder and solder both surface-mount and through-hole components, otherwise you risk irreparable damage to your original console and to this PCB. I claim no responsibility and accept no blame for any failed attempts.
+
+![](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/images/kicad_front.png)
 
 ## Ordering the board
 
@@ -16,7 +19,7 @@ Assembly of this PCB requires donor parts from a Game Boy Advance motherboard, a
 
 The PCB can be ordered via the following links:
 
-**[PCBWay](https://www.pcbway.com/project/shareproject/gbaHD_AIO_Shield_8eb5e84a.html)** (Full disclosure - this link gives me a small commission from each order)
+**[PCBWay](https://www.pcbway.com/project/shareproject/gbaHD_AIO_Shield_8eb5e84a.html)** (Full disclosure - this link gives me a small commission from each order - if you're new to PCBWay, feel free to use my [referral link](https://www.pcbway.com/setinvite.aspx?inviteid=422136) to sign up and get $5 off your order)
 
 **[OSHPark](https://oshpark.com/shared_projects/GWejn5tp)**
 
@@ -98,18 +101,49 @@ Please source your own passive components, only values and footprints are listed
 |  | SW2 | 1 | Rocker Switch | RS601HL-1020011BB | Or use any switch of your choice | https://lcsc.com/product-detail/Rocker-Switches_HCTL-RS601HL-1020011BB_C2885783.html |
 
 ## Programming the Spartan Edge Accelerator
-TO-DO. For now, refer to the documentation on zwenergy's repo.
+Refer to zwenergy's [spartan-edge-esp32-boot](https://github.com/zwenergy/spartan-edge-esp32-boot) repo for instructions on how to program the Spartan board's ESP32 (Use 01LoadDefaultBitstream). The ESP32 firmware allows the configuring of the FPGA logic from a bitstream file loaded on the microSD card. 
+
+Save one of the [latest bitstream releases](https://github.com/zwenergy/gbaHD/tree/master/bitstream) as `/overlay/default.bit` on your microSD card.
+
+zwenergy's ESP32 firmware also supports uploading the bitstream file via WiFi, such that the microSD card doesn't need to be removed. Simply connect to the `gbaHD` network hosted by the ESP32 (default password is `gbahdwifi`, this can be modified by editing the ESP32 Arduino sketch), and navigate to http://gbahd.local/ (if this doesn't work, try 192.168.4.1 instead). From here, the web page allows you to upload a bitstream file directly to the microSD card. Bitstream changes are applied after power cycling the Spartan board.
 
 ## Programming the Arduino bootloader (onboard Arduino only)
 
-If you assemble this board with an onboard Arduino, the ATmega328p will not come with the Arduino bootloader installed, so it will not be programmable from the Arduino IDE right out of the gate. Follow the [official documentation](https://docs.arduino.cc/built-in-examples/arduino-isp/ArduinoISP) to program the bootloader via the ICSP header on the board (a second Arduino is required).
+If you assemble this board with an onboard Arduino, the ATmega328p will not come with the Arduino bootloader installed, so it will not be programmable from the Arduino IDE right out of the gate. Follow the [official documentation](https://docs.arduino.cc/built-in-examples/arduino-isp/ArduinoISP) to program the bootloader via the ICSP header on the board (follow the steps to program it as an Arduino Nano, a second Arduino is required).
+
+Note that the onboard Arduino circuit is functionally identical to any Arduino Nano clone that uses a CH340 USB-to-Serial IC. If the microcontroller is not detected as a COM port on your computer, you may need to install the corresponding [driver](https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all).
 
 ## Programming the Arduino
 
-The Arduino is used to interface between the SNES controller port and the GBA for button inputs and the reset function. It also interfaces with the Spartan Edge Accelerator for on-screen display controls. Upload the sketch from \<sketch location\>. 
+The Arduino is used to interface between the SNES controller port and the GBA for button inputs and the reset function. It also interfaces with the Spartan Edge Accelerator for on-screen display controls. Upload this [sketch](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/controller/controller.ino).
 
-By default, the button combos are L+R+X+Y to toggle the OSD, and L+R+START+SELECT to reset the GBA. This can be configured by modifying the `` `define`` macros in the Arduino sketch. 
+By default, the button combos are:
+- L+R+X+Y to toggle the OSD
+- L+R+START+SELECT to reset the GBA. 
+ 
+These combos can be configured by modifying the `` `define`` macros in the Arduino sketch. 
+
+## Installing the master power switch
+
+As mentioned earlier, this is an optional feature that allows the use of an external toggle switch. This replaces the function of the power switch on the Spartan board itself, which would be inaccessible when installed in an enclosure. The load switch circuit (Q1, C28, C29, R20, R21) allows for the use of any toggle switch, regardless of rated current, and provides debouncing for poor/dirty switch contacts.
+
+1. Switch the power switch on the Spartan board to "EXTVIN-5V"
+2. Solder 2 wires from the legs of the power switch labelled "5V" and "USB" on the Spartan board to the corresponding solder points on the shield
+3. Solder 2 wires from the master power switch to the solder points labelled "POWER SWITCH" on the shield
+4. While the Spartan board is plugged into a USB-C power supply, the master power switch can be used to switch power on and off to the whole assembly
+
+## Known issues
+
+- When using an EZ Flash Omega flash cart, the reset button combo will only reset the loaded ROM. Resetting to the flash cart menu after a ROM has already been loaded requires a manual power reset
 
 ## Acknowledgements
 As always, thanks to the [Gameboy Discord](https://discord.gg/gameboy) community for their continued support.
 Special thanks to [zwenergy](https://github.com/zwenergy) for his hard work on the gbaHD
+
+# License
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+
+Feel free to modify this design however you like, but please make sure to give credit where it is due. I encourage you to share your improvements with the rest of the Gameboy modding community, I mainly frequent the Gameboy [Discord](https://discord.gg/RYN3bMxr) and [Subreddit](https://www.reddit.com/r/Gameboy/)
+
+Under this license, you are not permitted to profit from or commercialize this design in any part without my express permission.
