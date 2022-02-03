@@ -136,6 +136,17 @@ As mentioned earlier, this is an optional feature that allows the use of an exte
 3. Solder 2 wires from the master power switch to the solder points labelled "POWER SWITCH" on the shield
 4. While the Spartan board is plugged into a USB-C power supply, the master power switch can be used to switch power on and off to the whole assembly
 
+## FAQ
+
+- **Which way should the diodes be installed?**
+
+All the diodes on the board use KiCad built-in diode footprints, though admittedly they might not be the most clear.
+The silkscreen labels for the diodes indicate where the cathode is located:
+
+![Footprint in KiCad](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/images/diode_footprint.png)
+![Footprint onboard](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/images/diode_onboard.png)
+
+
 ## Known issues
 
 - When using an EZ Flash Omega flash cart, the reset button combo will only reset the loaded ROM. Resetting to the flash cart menu after a ROM has already been loaded requires a manual power reset
