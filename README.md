@@ -117,6 +117,8 @@ If you assemble this board with an onboard Arduino, the ATmega328p will not come
 
 Note that the onboard Arduino circuit is functionally identical to any Arduino Nano clone that uses a CH340 USB-to-Serial IC. If the microcontroller is not detected as a COM port on your computer, you may need to install the corresponding [driver](https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all).
 
+For advanced users who are familiar with programming microcontrollers via ICSP directly, the CH340C and USB-C port may be omitted entirely.
+
 ## Programming the Arduino
 
 The Arduino is used to interface between the SNES controller port and the GBA for button inputs and the reset function. It also interfaces with the Spartan Edge Accelerator for on-screen display controls. Upload this [sketch](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/controller/controller.ino).
