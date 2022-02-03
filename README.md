@@ -66,6 +66,7 @@ Please source your own passive components, only values and footprints are listed
 |  | R11 | 1 | 18kOhm 0603 | - | - | - |
 |  | R13 | 1 | 15Ohm 0603 | - | - | - |
 |  | R14 | 1 | 1kOhm 0603 | - | - | - |
+|  | U3 | 1 | 2.5V linear regulator | TLV71325PDBV | - | https://lcsc.com/product-detail/Linear-Voltage-Regulators-LDO_Texas-Instruments-TLV71325PDBVR_C90841.html |
 |  | S1 | 1 | Spartan Edge Accelerator | - | - | - |
 |  | - | 2 | 10-pin male header |  | Or generic, cut to size | https://lcsc.com/product-detail/Pin-Headers_XKB-Connectivity-X6511WV-10H-C30D60_C706882.html |
 |  | - | 2 | 8-pin male header |  | Or generic, cut to size | https://lcsc.com/product-detail/Pin-Headers_XKB-Connectivity-X6511WV-08H-C30D60_C706880.html |
@@ -90,7 +91,6 @@ Please source your own passive components, only values and footprints are listed
 |  | R22, R24 | 2 | 5.1kOhm 0603 | - | - | - |
 |  | R23, R25 | 2 | 1kOhm 0603 | - | Total 3 pieces including "Required" count | - |
 |  | SW1 | 1 | Pushbutton | TS-1101-C-W | - | https://lcsc.com/product-detail/Tactile-Switches_XKB-Connectivity-TS-1101-C-W_C318938.html |
-|  | U3 | 1 | 2.5V linear regulator | TLV71325PDBV | - | https://lcsc.com/product-detail/Linear-Voltage-Regulators-LDO_Texas-Instruments-TLV71325PDBVR_C90841.html |
 |  | U4 | 1 | Microcontroller | ATmega328P-AU | - | https://lcsc.com/product-detail/ATMEL-AVR_Microchip-Tech-ATMEGA328P-AU_C14877.html |
 |  | U5 | 1 | USB-to-serial IC | CH340C | - | https://lcsc.com/product-detail/USB-ICs_WCH-Jiangsu-Qin-Heng-CH340C_C84681.html |
 |  | Y1 | 1 | 16MHz crystal | Q24FA20H0023200 | - | https://lcsc.com/product-detail/Crystals_Seiko-Epson-Q24FA20H0023200_C255948.html |
