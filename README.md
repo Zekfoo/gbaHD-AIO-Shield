@@ -143,8 +143,8 @@ As mentioned earlier, this is an optional feature that allows the use of an exte
 All the diodes on the board use KiCad built-in diode footprints, though admittedly they might not be the most clear.
 The silkscreen labels for the diodes indicate where the cathode is located:
 
-![Footprint in KiCad](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/images/diode_footprint.png)
-![Footprint onboard](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/images/diode_onboard.png)
+![](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/images/diode_footprint.png)
+![](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/images/diode_onboard.png)
 
 
 ## Known issues
