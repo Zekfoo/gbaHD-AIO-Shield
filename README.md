@@ -151,7 +151,7 @@ The silkscreen labels for the diodes indicate where the cathode is located:
 
 ## Known issues
 
-- When using an EZ Flash Omega flash cart, the reset button combo will only reset the loaded ROM. Resetting to the flash cart menu after a ROM has already been loaded requires a manual power reset
+- When using an EZ Flash Omega flash cart, the reset button combo will only reset the loaded ROM. Resetting to the flash cart menu after a ROM has already been loaded requires a manual power reset, or use the flash cart's own reset-to-menu function (L+R+START by default when enabled in the flash cart settings).
 
 ## Acknowledgements
 As always, thanks to the [Gameboy Discord](https://discord.gg/gameboy) community for their continued support.
