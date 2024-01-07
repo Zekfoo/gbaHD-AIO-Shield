@@ -117,6 +117,8 @@ If you assemble this board with an onboard Arduino, the ATmega328p will not come
 
 Note that the onboard Arduino circuit is functionally identical to any Arduino Nano clone that uses a CH340 USB-to-Serial IC. If the microcontroller is not detected as a COM port on your computer, you may need to install the corresponding [driver](https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all).
 
+For advanced users who are familiar with programming microcontrollers via ICSP directly, the CH340C and USB-C port may be omitted entirely.
+
 ## Programming the Arduino
 
 The Arduino is used to interface between the SNES controller port and the GBA for button inputs and the reset function. It also interfaces with the Spartan Edge Accelerator for on-screen display controls. Upload this [sketch](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/controller/controller.ino).
@@ -136,9 +138,20 @@ As mentioned earlier, this is an optional feature that allows the use of an exte
 3. Solder 2 wires from the master power switch to the solder points labelled "POWER SWITCH" on the shield
 4. While the Spartan board is plugged into a USB-C power supply, the master power switch can be used to switch power on and off to the whole assembly
 
+## FAQ
+
+- **Which way should the diodes be installed?**
+
+All the diodes on the board use KiCad built-in diode footprints, though admittedly they might not be the most clear.
+The silkscreen labels for the diodes indicate where the cathode is located:
+
+![](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/images/diode_footprint.png)
+![](https://github.com/Zekfoo/gbaHD-AIO-Shield/blob/main/images/diode_onboard.png)
+
+
 ## Known issues
 
-- When using an EZ Flash Omega flash cart, the reset button combo will only reset the loaded ROM. Resetting to the flash cart menu after a ROM has already been loaded requires a manual power reset
+- When using an EZ Flash Omega flash cart, the reset button combo will only reset the loaded ROM. Resetting to the flash cart menu after a ROM has already been loaded requires a manual power reset, or use the flash cart's own reset-to-menu function (L+R+START by default when enabled in the flash cart settings).
 
 ## Acknowledgements
 As always, thanks to the [Gameboy Discord](https://discord.gg/gameboy) community for their continued support.
