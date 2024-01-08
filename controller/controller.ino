@@ -1,7 +1,10 @@
 /* 
  *  Modified from https://github.com/zwenergy/gbaHD
+ *  Some code snippets also borrowed from https://github.com/ManCloud/GBAHD-Shield
  *  Edit GBA_RESET_COMBO and OSD_COMBO to configure the button combos for GBA reset and OSD toggle respectively
 */
+
+#include <EEPROM.h>
 
 //// Pin definitions
 
@@ -34,33 +37,62 @@
 // hence using stupid sequences of NOPs makes it nicely timing 
 // predictable.
 #define NOP1 asm volatile( "nop\n" )
-#define NOP5 NOP1; NOP1; NOP1; NOP1; NOP1
-#define NOP10 NOP5; NOP5
-#define NOP20 NOP10; NOP10
-#define NOP40 NOP20; NOP20
-#define NOP80 NOP40; NOP40
+#define NOP2   NOP1;  NOP1
+#define NOP4   NOP2;  NOP2
+#define NOP8   NOP4;  NOP4
+#define NOP16  NOP8;  NOP8
+#define NOP32  NOP16; NOP16;
+#define NOP64  NOP32; NOP32;
+#define NOP128 NOP64; NOP64;
 
-#define WAIT2US NOP20; NOP10; NOP1
-#define WAIT8US NOP80; NOP40; NOP5; NOP1; NOP1; NOP1
+#define WAIT4US  NOP64
+#define WAIT10US NOP128; NOP32;
+#define WAIT14US NOP128; NOP64; NOP32;
 
+
+// OSD config struct
+typedef struct config_tag {
+  uint8_t smoothing :2;
+  uint8_t pixelGrid :2;
+  uint8_t multGrid :1;
+  uint8_t color :1;
+  uint8_t freq :1;
+  uint8_t padDisp :1;
+} config_t;
+
+// Pad display offsets
+#define PAD_DISP_A      (0x010)
+#define PAD_DISP_B      (0x020)
+#define PAD_DISP_UP     (0x001)
+#define PAD_DISP_DOWN   (0x002)
+#define PAD_DISP_LEFT   (0x004)
+#define PAD_DISP_RIGHT  (0x008)
+#define PAD_DISP_L      (0x040)
+#define PAD_DISP_R      (0x080)
+#define PAD_DISP_START  (0x100)
+#define PAD_DISP_SELECT (0x200)
+#define PAD_DISP_MASK   (0x3FF)
+
+// Controller state offsets
+#define CON_UP     (0x001)
+#define CON_DOWN   (0x002)
+#define CON_LEFT   (0x004)
+#define CON_RIGHT  (0x008)
+#define CON_A      (0x010)
+#define CON_B      (0x020)
+#define CON_L      (0x040)
+#define CON_R      (0x080)
+#define CON_START  (0x100)
+#define CON_SELECT (0x200)
+#define CON_X      (0x400)
+#define CON_Y      (0x800)
+#define CON_MASK   (0xFFF)
 
 // Button combo macros
-#define GBA_RESET_COMBO ( conL & conR & conSelect & conStart )
-#define OSD_COMBO       ( conL & conR & conX & conY )
+#define GBA_RESET_COMBO (CON_L | CON_R | CON_SELECT | CON_START)
+#define OSD_COMBO       (CON_L | CON_R | CON_X | CON_Y)
 
-// The latest controller state
-uint8_t conA;
-uint8_t conB;
-uint8_t conX;
-uint8_t conY;
-uint8_t conDUp;
-uint8_t conDDown;
-uint8_t conDLeft;
-uint8_t conDRight;
-uint8_t conL;
-uint8_t conR;
-uint8_t conStart;
-uint8_t conSelect;
+uint16_t controllerState, lastState; // b000000, Select, Start, R, L, B, A, Right, Left, Down, Up}
 
 uint8_t gbaReset;
 
@@ -70,6 +102,7 @@ uint8_t showOSD;
 
 // Read the controller
 void readController() {
+  controllerState = 0;
   // Set the latch to high for 12 us.
   digitalWrite( SNESLATCH, 1 );
   delayMicroseconds( 12 );
@@ -83,46 +116,47 @@ void readController() {
     // We only care about the first 12 bits.
     if ( i < 12 ) {
       uint8_t curDat = !digitalRead( SNESSERIAL );
-      switch ( i ) {
-        case 0:
-          conB = curDat;
-          break;
-        case 1:
-          conY = curDat;
-          break;
-        case 2:
-          conSelect = curDat;
-          break;
-        case 3:
-          conStart = curDat;
-          break;
-        case 4:
-          conDUp = curDat;
-          break;
-        case 5:
-          conDDown = curDat;
-          break;
-        case 6:
-          conDLeft = curDat;
-          break;
-        case 7:
-          conDRight = curDat;
-          break;
-        case 8:
-          conA = curDat;
-          break;
-        case 9:
-          conX = curDat;
-          break;
-        case 10:
-          conL = curDat;
-          break;
-        case 11:
-          conR = curDat;
-          break;
-        default:
-          break;
-        
+      if (curDat) {
+        switch ( i ) {
+          case 0:
+            controllerState |= CON_B;
+            break;
+          case 1:
+            controllerState |= CON_Y;
+            break;
+          case 2:
+            controllerState |= CON_SELECT;
+            break;
+          case 3:
+            controllerState |= CON_START;
+            break;
+          case 4:
+            controllerState |= CON_UP;
+            break;
+          case 5:
+            controllerState |= CON_DOWN;
+            break;
+          case 6:
+            controllerState |= CON_LEFT;
+            break;
+          case 7:
+            controllerState |= CON_RIGHT;
+            break;
+          case 8:
+            controllerState |= CON_A;
+            break;
+          case 9:
+            controllerState |= CON_X;
+            break;
+          case 10:
+            controllerState |= CON_L;
+            break;
+          case 11:
+            controllerState |= CON_R;
+            break;
+          default:
+            break;
+        }
       }
     }
     digitalWrite( SNESCLK, 1 );
@@ -137,69 +171,169 @@ void updateGBASignals() {
   // Since all output registers are already set to 0, we only need
   // to toggle the port direction.
   // Get D0 and D1 directions.
-  uint8_t d1d0 = DDRD;
-  d1d0 = d1d0 & 0b00000011;
-  uint8_t dir = d1d0 | ( conDUp << 2 ) | ( conDDown << 3 ) | ( conDLeft << 4 ) |
-    ( conDRight << 5 ) | ( conA << 6 ) | ( conB << 7 );
+  uint8_t dir = DDRD & 0b00000011;
+  if (controllerState & CON_UP)    dir |= 1 << 2;
+  if (controllerState & CON_DOWN)  dir |= 1 << 3;
+  if (controllerState & CON_LEFT)  dir |= 1 << 4;
+  if (controllerState & CON_RIGHT) dir |= 1 << 5;
+  if (controllerState & CON_A)     dir |= 1 << 6;
+  if (controllerState & CON_B)     dir |= 1 << 7;
   // Write them.
   DDRD = dir;
 
   // The next ones.
-  dir = ( conL ) | ( conR << 1 ) | ( conStart << 2 ) | ( conSelect << 3 ) | ( gbaReset << 4 );
+  dir = 0;
+  if (controllerState & CON_L)      dir |= 1;
+  if (controllerState & CON_R)      dir |= 1 << 1;
+  if (controllerState & CON_START)  dir |= 1 << 2;
+  if (controllerState & CON_SELECT) dir |= 1 << 3;
+  // Write them.
   DDRB = dir; 
 }
 
+void rebootGBA(bool hold) {
+  DDRB = 1 << 4;
+  if (!hold) {
+    delay(10);
+    DDRB = 0;
+  }
+}
+
+config_t config_byte = {0,0,0,0,0,0};
+config_t config_byte_bak = {0,0,0,0,0,0};
+
+void osdWriteConfig(void) {
+    sendPacket(0x4000 | *((uint8_t*)(&config_byte)));
+}
+
+void osdInit(void){
+    uint8_t tmpVal = EEPROM.read((uint8_t *)(E2END-1));
+    if(tmpVal == 0xFF) tmpVal = 0;
+    config_byte = *((config_t *)(&tmpVal));
+    osdWriteConfig();
+}
+
+void osdEnter(void) {
+    config_byte_bak = config_byte;
+    if(config_byte.padDisp) {
+        delay(10);
+        sendPacket( (0x8000));
+        delay(10);
+        sendPacket( (0x8000));
+        delay(10);
+    }
+}
+
+
+#define OSD_MIN_IDX 3
+#define OSD_MAX_IDX 8
+bool osdUpdate() {
+    bool retVal = true;
+
+    static uint8_t osd_idx = OSD_MIN_IDX;
+    static uint16_t last_buttons = 0;
+
+    if(controllerState != last_buttons) {
+        last_buttons = controllerState;
+        if(controllerState) {
+            bool updateOSD = true;
+            switch(controllerState) {
+                case CON_UP: {
+                    osd_idx = ((osd_idx > OSD_MIN_IDX) ? (osd_idx - 1) : OSD_MIN_IDX);
+                } break;
+                case CON_DOWN: {
+                    osd_idx = ((osd_idx < OSD_MAX_IDX) ? (osd_idx + 1) : OSD_MAX_IDX);
+                } break;
+                case CON_A: {
+                    updateOSD = false;
+                    switch (osd_idx){
+                        case 3: config_byte.pixelGrid = ( (config_byte.pixelGrid < 3) ? ((config_byte.pixelGrid << 1) + 1) : 0); break;
+                        case 4: config_byte.multGrid = !config_byte.multGrid; break;
+                        case 5: config_byte.smoothing = ( (config_byte.smoothing < 2) ? (config_byte.smoothing + 1) : 0); break;
+                        case 6: config_byte.color = !config_byte.color; break;
+                        case 7: config_byte.freq = !config_byte.freq; break;
+                        case 8: config_byte.padDisp = !config_byte.padDisp; break;
+                    }
+                    osdWriteConfig();
+                } break;
+                case CON_B: {
+                    config_byte = config_byte_bak;
+                    osdWriteConfig();
+                    retVal = false;
+                    osd_idx = OSD_MIN_IDX;
+                } break;
+                case CON_START: {
+                    EEPROM.update((uint8_t *)(E2END-1), *(uint8_t *)(&config_byte));
+                    retVal = false;
+                    osd_idx = OSD_MIN_IDX;
+                } break;
+            }
+            if(updateOSD) {
+                delay(10);
+                sendPacket( (0x2000) | (osd_idx << 1) | (retVal ? 1 : 0) );
+                delay(10);
+                sendPacket( (0x2000) | (osd_idx << 1) | (retVal ? 1 : 0) );
+                delay(10);
+            }
+        }
+    }
+    return retVal;
+}
+
+void padUpdate() {
+    uint16_t pad_display_word = 0x8000;
+    if (controllerState & CON_A)      pad_display_word |= PAD_DISP_A;
+    if (controllerState & CON_B)      pad_display_word |= PAD_DISP_B;
+    if (controllerState & CON_UP)     pad_display_word |= PAD_DISP_UP;
+    if (controllerState & CON_DOWN)   pad_display_word |= PAD_DISP_DOWN;
+    if (controllerState & CON_LEFT)   pad_display_word |= PAD_DISP_LEFT;
+    if (controllerState & CON_RIGHT)  pad_display_word |= PAD_DISP_RIGHT;
+    if (controllerState & CON_L)      pad_display_word |= PAD_DISP_L;
+    if (controllerState & CON_R)      pad_display_word |= PAD_DISP_R;
+    if (controllerState & CON_START)  pad_display_word |= PAD_DISP_START;
+    if (controllerState & CON_SELECT) pad_display_word |= PAD_DISP_SELECT;
+    sendPacket(pad_display_word);
+}
+
+
 // Send packet to FPGA
-void sendPacket( uint8_t p ) {
-  uint8_t curPort = PINC;
-  for ( uint8_t i = 0; i < 8; ++i ) {
-    uint8_t curBit = p & ( 1 << i );
-    if ( curBit ) {
-      curPort &= B11110111;
-      PORTC = curPort;
-      WAIT2US;
-      curPort |= B00001000;
-      PORTC = curPort;
-      WAIT8US;
+void sendPacket( uint16_t p ) {
+  for ( uint16_t i = 1; i != 0; i<<=1 ) {
+    if (p & i) {
+      PORTC &= B11110111;
+      WAIT4US;
+      PORTC |= B00001000;
+      WAIT10US;
     } else {
-      curPort &= B11110111;
-      PORTC = curPort;
-      WAIT8US;
-      curPort |= B00001000;
-      PORTC = curPort;
-      WAIT2US;
+      PORTC &= B11110111;
+      WAIT14US;
+      PORTC |= B00001000;
     }
   }
 }
 
 // Clear the button states
 void noButtons() {
-  conA = 0;
-  conB = 0;
-  conDUp = 0;
-  conDDown = 0;
-  conDLeft = 0;
-  conDRight = 0;
-  conR = 0;
-  conL = 0;
-  conStart = 0;
-  conSelect = 0;
+  controllerState = 0;
 }
 
 // For serial debug only
 void debugOutput() {
-  if(conA)  Serial.print("A ");
-  if(conB)  Serial.print("B ");
-  if(conX) Serial.print("X ");
-  if(conY) Serial.print("Y ");
-  if(conL) Serial.print("L ");
-  if(conR) Serial.print("R ");
-  if(conStart) Serial.print("START ");
-  if(conSelect) Serial.print("SELECT ");
-  if(conDUp) Serial.print("UP ");
-  if(conDDown) Serial.print("DOWN ");
-  if(conDLeft) Serial.print("LEFT ");
-  if(conDRight) Serial.print("RIGHT ");
+  Serial.print("DEBUG: ");
+  Serial.print(controllerState, BIN);
+  Serial.print(" ");
+  if(controllerState & CON_A)      Serial.print("A ");
+  if(controllerState & CON_B)      Serial.print("B ");
+  if(controllerState & CON_X)      Serial.print("X ");
+  if(controllerState & CON_Y)      Serial.print("Y ");
+  if(controllerState & CON_L)      Serial.print("L ");
+  if(controllerState & CON_R)      Serial.print("R ");
+  if(controllerState & CON_START)  Serial.print("START ");
+  if(controllerState & CON_SELECT) Serial.print("SELECT ");
+  if(controllerState & CON_UP)     Serial.print("UP ");
+  if(controllerState & CON_DOWN)   Serial.print("DOWN ");
+  if(controllerState & CON_LEFT)   Serial.print("LEFT ");
+  if(controllerState & CON_RIGHT)  Serial.print("RIGHT ");
   if(gbaReset) Serial.print("RESET ");
   Serial.println();
 }
@@ -262,40 +396,40 @@ void setup() {
   // Communication pin.
   pinMode( COMPIN, OUTPUT );
   digitalWrite( COMPIN, 1 );
+
+  rebootGBA(true);
+  delay(5000); // Placeholder delay to wait for FPGA to be programmed
+  osdInit();
+  rebootGBA(false);
 }
 
 void loop() {
   readController();
-  if ( gbaReset )
-    gbaReset = 0;
 
-  if ( OSD_COMBO ) {
-    if ( gotCombo == 0 ) {
-      showOSD = !showOSD;
-      gotCombo = 1;
-
-      // Set the buttons to off once.
-      noButtons();
-      updateGBASignals();
-    }
-  } else if ( gotCombo == 1 ) {
-    gotCombo = 0;
+  if (lastState != controllerState) {
+      lastState = controllerState;
+      switch (controllerState)
+      {
+          case GBA_RESET_COMBO: {
+              rebootGBA(false);
+          } break;
+          case OSD_COMBO: {
+              osdEnter();
+              showOSD = true;
+          } break;
+      }
   }
-
-  if ( GBA_RESET_COMBO ) {
-    gbaReset = 1;
+  
+  if (showOSD) {
+      showOSD = osdUpdate();
+      noButtons();    //clear controller data as long as OSD is enabled
+  } else if(config_byte.padDisp) {
+      padUpdate();
   }
 
   // Only update GBA signals if the menu is not active.
   if ( !showOSD ) {
     //debugOutput();
-    updateGBASignals();  
+    updateGBASignals();
   }
-
-  // Prepare packet to send.
-  uint8_t packet = ( conB << 7 ) | ( conA << 6 ) | ( conDLeft << 5 ) | ( conDRight << 4 ) | ( conDDown << 3 ) | ( conDUp << 2 ) | ( showOSD << 1 );
-  sendPacket( packet );
-
-  delay( POLLINT );
-  
 }
